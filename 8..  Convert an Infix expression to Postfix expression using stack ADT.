@@ -1,0 +1,91 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
+
+#define MAX_SIZE 100
+
+char stack[MAX_SIZE]; // Stack to hold operators
+int top = -1; // Stack top index
+
+void push(char c) {
+    if (top < MAX_SIZE - 1) {
+        stack[++top] = c;
+    }
+}
+
+char pop() {
+    if (top >= 0) {
+        return stack[top--];
+    }
+    return '\0'; // Return null if stack is empty
+}
+
+char peek() {
+    if (top >= 0) {
+        return stack[top];
+    }
+    return '\0'; // Return null if stack is empty
+}
+
+int precedence(char op) {
+    switch (op) {
+        case '+':
+        case '-':
+            return 1;
+        case '*':
+        case '/':
+            return 2;
+        case '^':
+            return 3;
+        default:
+            return 0; // Non-operator
+    }
+}
+
+void infixToPostfix(char* infix, char* postfix) {
+    int j = 0; // Index for postfix array
+    for (int i = 0; i < strlen(infix); i++) {
+        char c = infix[i];
+
+        if (isspace(c)) {
+            continue; // Skip spaces
+        }
+
+        if (isalnum(c)) {
+            postfix[j++] = c; // Add operand to postfix
+        } else if (c == '(') {
+            push(c); // Push '(' to stack
+        } else if (c == ')') {
+            while (top != -1 && peek() != '(') {
+                postfix[j++] = pop(); // Pop to output until '('
+            }
+            pop(); // Remove '(' from stack
+        } else { // Operator
+            while (top != -1 && precedence(peek()) >= precedence(c)) {
+                postfix[j++] = pop(); // Pop operators with higher or equal precedence
+            }
+            push(c); // Push current operator
+        }
+    }
+
+    // Pop remaining operators from the stack
+    while (top != -1) {
+        postfix[j++] = pop();
+    }
+    
+    postfix[j] = '\0'; // Null-terminate the postfix expression
+}
+
+int main() {
+    char infix[MAX_SIZE], postfix[MAX_SIZE];
+    
+    printf("Enter infix expression: ");
+    fgets(infix, sizeof(infix), stdin); // Read input with spaces
+    
+    infixToPostfix(infix, postfix);
+    
+    printf("Postfix expression: %s\n", postfix);
+    
+    return 0;
+}
