@@ -1,0 +1,81 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX 5
+
+int que[MAX], front = -1, rear = -1, val;
+
+void enqueue(int que[]);
+void display(int que[]);
+void peek(int que[]);
+void dequeue(int que[]);
+
+int main() {
+    int option;
+    do {
+        printf("\n*************** Option Menu **************");
+        printf("\n1. Enqueue\n2. Dequeue\n3. Peek\n4. Display\n5. Exit");
+        printf("\nChoose your option: ");
+        scanf("%d", &option);
+        
+        switch (option) {
+            case 1: enqueue(que); break;
+            case 2: dequeue(que); break;
+            case 3: peek(que); break;
+            case 4: display(que); break;
+            case 5: printf("\nExiting program.\n"); break;
+            default: printf("\nInvalid option selected!!");
+        }
+    } while (option != 5);
+    
+    return 0;
+}
+
+void enqueue(int que[]) {
+    printf("\nEnter the element to enqueue: ");
+    scanf("%d", &val);
+    
+    if (rear == MAX - 1) {
+        printf("\nQueue overflow!! ");
+    } else if (front == -1 && rear == -1) { // First element to enqueue
+        front = rear = 0;
+        que[rear] = val;
+    } else {
+        rear++;
+        que[rear] = val;
+    }
+}
+
+void display(int que[]) {
+    int i;
+    if (front == -1 || front > rear) {
+        printf("\nQueue is empty!!");
+    } else {
+        printf("\nQueue elements: ");
+        for (i = front; i <= rear; i++) {
+            printf("%d ", que[i]);
+        }
+    }
+}
+
+void dequeue(int que[]) {
+    if (front == -1 || front > rear) {
+        printf("\nThe queue is underflow!! ");
+    } else {
+        val = que[front];
+        printf("\nDequeued element is %d ", val);
+        front++; // Move front to the next element
+        
+        // Resetting the queue if it becomes empty
+        if (front > rear) {
+            front = rear = -1; // Reset the queue state
+        }
+    }
+}
+
+void peek(int que[]) {
+    if (front == -1 || front > rear) {
+        printf("\nQueue is underflow!! ");
+    } else {
+        printf("\nFront element is %d ", que[front]); // Correcting to show front element
+    }
+}
