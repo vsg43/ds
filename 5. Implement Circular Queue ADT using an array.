@@ -1,0 +1,91 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX 5
+
+int front = -1, rear = -1, val;
+int queue[MAX];
+
+void enqueue(int queue[]);
+void dequeue(int queue[]);
+void peek(int queue[]);
+void display(int queue[]);
+
+int main() {
+    int option;
+    do {
+        printf("\n*************** Option Menu **************");
+        printf("\n1. Enqueue\n2. Dequeue\n3. Peek\n4. Display\n5. Exit");
+        printf("\nChoose your option: ");
+        scanf("%d", &option);
+
+        switch (option) {
+            case 1: enqueue(queue); break;
+            case 2: dequeue(queue); break;
+            case 3: peek(queue); break;
+            case 4: display(queue); break;
+            case 5: printf("\nExiting program.\n"); break;
+            default: printf("\nInvalid option selected!!");
+        }
+    } while (option != 5);
+
+    return 0;
+}
+
+void enqueue(int queue[]) {
+    printf("\nEnter value to enqueue in queue: ");
+    scanf("%d", &val);
+
+    if ((rear + 1) % MAX == front) {
+        printf("\nThe queue is full (overflow)!");
+    } else if (front == -1 && rear == -1) { // First element
+        front = rear = 0;
+        queue[rear] = val;
+    } else {
+        rear = (rear + 1) % MAX;
+        queue[rear] = val;
+    }
+}
+
+void dequeue(int queue[]) {
+    if (front == -1) {
+        printf("\nThe queue is empty (underflow)!");
+    } else {
+        val = queue[front];
+        if (front == rear) { // Only one element
+            front = rear = -1;
+        } else {
+            front = (front + 1) % MAX;
+        }
+        printf("\nThe dequeued element is %d", val);
+    }
+}
+
+void peek(int queue[]) {
+    if (front == -1) {
+        printf("\nThe queue is empty!");
+    } else {
+        printf("\nThe front element is %d", queue[front]);
+    }
+}
+
+void display(int queue[]) {
+    int i;
+    if (front == -1) {
+        printf("\nQueue is empty!");
+    } else {
+        printf("\nQueue elements: ");
+        if (front <= rear) {
+            for (i = front; i <= rear; i++) {
+                printf("%d ", queue[i]);
+            }
+        } else {
+            for (i = front; i < MAX; i++) {
+                printf("%d ", queue[i]);
+            }
+            for (i = 0; i <= rear; i++) {
+                printf("%d ", queue[i]);
+            }
+        }
+        printf("\n");
+    }
+}
