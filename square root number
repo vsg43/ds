@@ -1,0 +1,26 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+double squareroot(int num) {
+    double low = 0, high = num, mid;
+    double precision = 0.0000001;
+
+    while ((high - low) > precision) {
+        mid = (low + high) / 2;
+
+        if (mid * mid < num) {
+            low = mid;
+        } else {
+            high = mid;
+        }
+    }
+    return (high + low) / 2;
+}
+
+int main() {
+    int i;
+    for (i = 1; i <= 10; i++) {
+        printf("\nSquare root of %d is approximately %.5f", i, squareroot(i));
+    }
+    return 0;
+}
