@@ -1,0 +1,78 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+
+#define MAX_SIZE 100
+
+// Stack structure
+int stack[MAX_SIZE];
+int top = -1;
+
+// Stack operations
+void push(int value) {
+    if (top < MAX_SIZE - 1) {
+        stack[++top] = value; // Push value onto stack
+    }
+}
+
+int pop() {
+    if (top >= 0) {
+        return stack[top--]; // Pop value from stack
+    }
+    return 0; // Return 0 if stack is empty (error handling can be improved)
+}
+
+// Evaluate the postfix expression
+int evaluatePostfix(char* expression) {
+    for (int i = 0; expression[i] != '\0'; i++) {
+        char c = expression[i];
+
+        // Skip whitespace
+        if (isspace(c)) {
+            continue;
+        }
+
+        // If the character is a digit, push it onto the stack
+        if (isdigit(c)) {
+            push(c - '0'); // Convert char to int and push
+        } 
+        // If the character is an operator
+        else {
+            int operand2 = pop(); // Pop top two operands
+            int operand1 = pop();
+            int result;
+
+            switch (c) {
+                case '+':
+                    result = operand1 + operand2;
+                    break;
+                case '-':
+                    result = operand1 - operand2;
+                    break;
+                case '*':
+                    result = operand1 * operand2;
+                    break;
+                case '/':
+                    result = operand1 / operand2;
+                    break;
+                default:
+                    printf("Invalid operator: %c\n", c);
+                    return 0; // Handle invalid operator
+            }
+            push(result); // Push result back onto the stack
+        }
+    }
+    return pop(); // The final result is the only item left in the stack
+}
+
+int main() {
+    char expression[MAX_SIZE];
+
+    printf("Enter a postfix expression: ");
+    fgets(expression, sizeof(expression), stdin); // Read input with spaces
+
+    int result = evaluatePostfix(expression);
+    printf("Result: %d\n", result);
+
+    return 0;
+}
