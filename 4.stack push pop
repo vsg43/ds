@@ -1,0 +1,79 @@
+#include <stdio.h>
+#define SIZE 5 // Define maximum size of the stack
+
+// Stack structure with an array and a top pointer
+struct Stack {
+    int items[SIZE];
+    int top;
+};
+
+// Function to initialize the stack
+void initializeStack(struct Stack *s) {
+    s->top = -1;
+}
+
+// Check if the stack is full
+int isFull(struct Stack *s) {
+    return s->top == SIZE - 1;
+}
+
+// Check if the stack is empty
+int isEmpty(struct Stack *s) {
+    return s->top == -1;
+}
+
+// Push operation to add an element to the stack
+void push(struct Stack *s, int value) {
+    if (isFull(s)) {
+        printf("Stack is full. Cannot push %d\n", value);
+    } else {
+        s->top++;
+        s->items[s->top] = value;
+        printf("Pushed: %d\n", value);
+    }
+}
+
+// Pop operation to remove an element from the stack
+void pop(struct Stack *s) {
+    if (isEmpty(s)) {
+        printf("Stack is empty. Cannot pop\n");
+    } else {
+        int poppedValue = s->items[s->top];
+        s->top--;
+        printf("Popped: %d\n", poppedValue);
+    }
+}
+
+// Main function with menu-driven interface
+int main() {
+    struct Stack s;
+    initializeStack(&s);
+
+    int choice, value;
+    while (1) {
+        printf("\nStack Operations:\n");
+        printf("1. Push\n");
+        printf("2. Pop\n");
+        printf("3. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                printf("Enter the value to push: ");
+                scanf("%d", &value);
+                push(&s, value);
+                break;
+            case 2:
+                pop(&s);
+                break;
+            case 3:
+                printf("Exiting...\n");
+                return 0;
+            default:
+                printf("Invalid choice. Please try again.\n");
+        }
+    }
+
+    return 0;
+}
