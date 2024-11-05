@@ -1,0 +1,90 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX 5
+
+int stack[MAX], top = -1, val;
+
+void push(int stack[]);
+void display(int stack[]);
+void peek(int stack[]);
+void pop(int stack[]);
+
+int main() {
+    int option;
+    do {
+        printf("\n************* Option Menu ********************");
+        printf("\n 1: Push");
+        printf("\n 2: Pop");
+        printf("\n 3: Display");
+        printf("\n 4: Peek");
+        printf("\n 5: Exit");
+        printf("\n Enter your option: ");
+        scanf("%d", &option);
+
+        switch(option) {
+            case 1:
+                push(stack);
+                break;
+            case 2:
+                pop(stack);
+                break;
+            case 3:
+                display(stack);
+                break;
+            case 4:
+                peek(stack);
+                break;
+            case 5:
+                printf("\nExiting program.\n");
+                break;
+            default:
+                printf("\nInvalid input. Please select a valid option.\n");
+        }
+    } while(option != 5);
+
+    return 0;
+}
+
+void push(int stack[]) {
+    printf("\nEnter the value to push into stack: ");
+    scanf("%d", &val);
+    if (top == MAX - 1) {
+        printf("\nStack is full!!");
+    } else {
+        top++;
+        stack[top] = val;
+        printf("\nValue pushed: %d", val);
+    }
+}
+
+void display(int stack[]) {
+    if (top == -1) {
+        printf("\nStack is empty!!");
+    } else {
+        printf("\nStack elements are: ");
+        for (int i = 0; i <= top; i++) {
+            printf("%d ", stack[i]);
+        }
+    }
+}
+
+void pop(int stack[]) {
+    if (top == -1) {
+        printf("\nStack underflow!!");
+    } else {
+        val = stack[top];
+        printf("\nThe popped element is: %d", val);
+        top--;
+    }
+}
+
+void peek(int stack[]) {
+    if (top == -1) {
+        printf("\nStack underflow!!");
+    } else {
+        val = stack[top];
+        printf("\nThe top element of stack is %d", val);
+    }
+}
+
+
