@@ -1,0 +1,77 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Define a structure for a node in a doubly linked list
+struct Node {
+    int data;
+    struct Node* next;
+    struct Node* prev;
+};
+
+// Function to create a new node
+struct Node* createNode(int value) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = value;
+    newNode->next = NULL;
+    newNode->prev = NULL;
+    return newNode;
+}
+
+// Function to insert a node at the beginning of the doubly linked list
+void insertAtBeginning(struct Node** head, int value) {
+    struct Node* newNode = createNode(value);
+    newNode->next = *head; // Link the new node to the current head
+
+    if (*head != NULL) {
+        (*head)->prev = newNode; // Link the previous head back to the new node
+    }
+
+    *head = newNode; // Update the head to the new node
+}
+
+// Function to display the doubly linked list
+void displayList(struct Node* head) {
+    struct Node* current = head;
+
+    if (current == NULL) {
+        printf("The list is empty.\n");
+        return;
+    }
+    
+    printf("Doubly Linked List: ");
+    while (current != NULL) {
+        printf("%d <-> ", current->data);
+        current = current->next;
+    }
+    printf("NULL\n");
+}
+
+// Main function to demonstrate the doubly linked list operations
+int main() {
+    struct Node* head = NULL; // Initialize the head of the list
+    int choice, value;
+
+    do {
+        printf("\n1. Insert at beginning\n2. Display list\n3. Exit\n");
+        printf("Choose an option: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                printf("Enter value to insert at beginning: ");
+                scanf("%d", &value);
+                insertAtBeginning(&head, value);
+                break;
+            case 2:
+                displayList(head);
+                break;
+            case 3:
+                printf("Exiting program.\n");
+                break;
+            default:
+                printf("Invalid option! Please try again.\n");
+        }
+    } while (choice != 3);
+
+    return 0;
+}
